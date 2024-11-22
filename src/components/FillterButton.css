@@ -1,0 +1,9 @@
+.coldsasa{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-bottom: 2px solid #e5e7eb ;
+    padding: 5px;
+    width: 100%;
+    gap: 10px;
+}

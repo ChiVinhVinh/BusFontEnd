@@ -1,0 +1,26 @@
+.col312{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0px;
+   
+}
+.col312 > span{
+    width: 672px;
+    height: 42px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    color: #4a4a4a;
+    margin-top: 8px;
+}
+.col312 >h1{
+    color: #00613d;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 33px;
+}
+.col312 >img{
+    margin: 30px 0px;
+}

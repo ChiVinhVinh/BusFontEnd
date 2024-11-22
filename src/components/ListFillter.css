@@ -1,0 +1,29 @@
+.col21312312{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+}
+.row5712d{
+    display: flex;
+    flex-direction: row;
+    gap:20px
+}
+.col312211{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap:20px
+}
+.row821717{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    padding: 3px 20px;
+    cursor: pointer;
+    border: 1px solid red;
+    border-radius: 5px;
+}
+.active1{
+    color: #EF5222;
+}

@@ -1,0 +1,31 @@
+.rowtttt{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    height: 84px;
+    margin-bottom: 12px;
+}
+.colttt{
+    display: flex;
+    flex-direction: column;
+}
+.rowInfo{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    line-height: 2.25rem;
+}
+.rowtttt >img{
+    width: 76px;
+    height: 76px;
+}
+.rowInfo >span:nth-child(1){
+    font-weight: bold;
+    font-size: 1.875rem;
+}
+.rowInfo >span:nth-child(2){
+    font-weight: bold;
+}
+.infobusss{
+    text-align: left;
+}

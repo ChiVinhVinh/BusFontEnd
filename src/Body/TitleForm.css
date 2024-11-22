@@ -1,0 +1,71 @@
+.title {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.listimg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-height: auto;
+    align-items: center;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.imgTitle {
+    width: 351px;
+    height: 190px;
+    object-fit: cover;
+    margin-right: 32px;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 1, 0.8);
+}
+
+.title {
+    margin-top: 5rem;
+}
+
+.spans {
+    color: #00613D;
+    text-transform: uppercase;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 33px;
+}
+
+.listdot {
+    display: flex;
+    justify-content: center;
+    margin-top: -2rem;
+    padding: 0;
+    list-style: none;
+}
+
+.listdot li {
+    margin: 0 5px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #E4E3E3;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.active {
+    background-color: #EF5222;
+    border-radius: 100px;
+    width: 28px;
+    height: 10px;
+}

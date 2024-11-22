@@ -1,0 +1,13 @@
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%; 
+}
+.col{
+    display: flex;
+    flex-direction: column;
+    border-bottom-width: 1px !important;
+    align-items: flex-start;
+    padding: 20px;
+}
