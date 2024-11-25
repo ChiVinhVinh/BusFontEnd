@@ -8,12 +8,13 @@ import ListFillter from './ListFillter';
 import './FillterForm.css'
 
 
-const FillterForm = ({ data }: any) => {
+const FillterForm = ({ data, count }: any) => {
     console.log('dataaaaaaaaaa', data)
+    console.log("csssssssssssssssssssssssssssssss", count)
     return (
         <FillterFormProvider>
             <div className='row3211112'>
-                <FillterCheckBox></FillterCheckBox>
+                <FillterCheckBox count={count}></FillterCheckBox>
                 <ListFillter data={data}></ListFillter>
             </div>
         </FillterFormProvider>

@@ -71,9 +71,16 @@ function SearchForm({ onChangeProject, result1 }: any) {
             if (!response.ok) {
                 throw new Error("Failed to fetch matching trips");
             }
-            const result = await response.json();
-            result1(result);
-            console.log("Matching trips:", result);
+            // const responseJson = await response.json();
+            // console.log("Response JSON:", responseJson);
+            const { Trip, TimeCounts } = await response.json();
+            result1({
+                dataTrip: Trip,
+                timecount: TimeCounts
+            });
+            console.log('Trippppppppppppppppppppppppppppp', Trip);
+            console.log('Counnnnnnnnnnnnnnnnn', TimeCounts)
+
         } catch (error) {
             console.error("Error submitting search form:", error);
         }

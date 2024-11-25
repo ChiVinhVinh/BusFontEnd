@@ -5,7 +5,7 @@ import FillterButton from "./FillerButton";
 import './FillterCheckBox.css'
 import { FillterFormContext } from "./FillterFormContext";
 
-const FillterCheckBox = () => {
+const FillterCheckBox = ({ count }: any) => {
     const context = useContext(FillterFormContext);
     if (!context) {
         throw new Error('useFilterForm must be used within a FillterFormProvider');
@@ -21,8 +21,6 @@ const FillterCheckBox = () => {
                 : prev.time.filter(t => t !== timeRange)
         }));
     };
-
-
     const handleClearFilters = () => {
         setSelectedFilter({
             time: [],
@@ -31,10 +29,7 @@ const FillterCheckBox = () => {
             flow: []
         });
     };
-
-
-
-
+    console.log("couuuuuuuuuuuuuuuuuuuuuuuuuuuuu", count)
     return (
         <div>
             <div className="col32322321">
@@ -50,8 +45,6 @@ const FillterCheckBox = () => {
                         Bỏ lọc
                     </Button>
                 </div>
-
-
                 <div className="Checkboxx">
                     <span>Giờ đi</span>
                     <FormGroup>
@@ -62,7 +55,7 @@ const FillterCheckBox = () => {
                                     onChange={(e) => handleTimeChange('00:00-06:00', e.target.checked)}
                                 />
                             }
-                            label="Sáng sớm 00:00-06:00"
+                            label={`Sáng sớm 00:00-06:00 (${count.EarlyMorning})`}
                         />
                         <FormControlLabel
                             control={
@@ -71,7 +64,7 @@ const FillterCheckBox = () => {
                                     onChange={(e) => handleTimeChange('06:00-12:00', e.target.checked)}
                                 />
                             }
-                            label="Buổi sáng 06:00-12:00"
+                            label={`Buổi sáng 06:00-12:00 (${count.Morning})`}
                         />
                         <FormControlLabel
                             control={
@@ -80,7 +73,7 @@ const FillterCheckBox = () => {
                                     onChange={(e) => handleTimeChange('12:00-18:00', e.target.checked)}
                                 />
                             }
-                            label="Buổi chiều 12:00-18:00"
+                            label={`Buổi chiều 12:00-18:00 (${count.AfterNoon})`}
                         />
                         <FormControlLabel
                             control={
@@ -89,7 +82,7 @@ const FillterCheckBox = () => {
                                     onChange={(e) => handleTimeChange('18:00-24:00', e.target.checked)}
                                 />
                             }
-                            label="Buổi tối 18:00-24:00"
+                            label={`Buổi tối 18:00-24:00 (${count.Evening})`}
                         />
                     </FormGroup>
                 </div>
@@ -102,8 +95,6 @@ const FillterCheckBox = () => {
                 <div className="Checkboxx">
                     <FillterButton title="Tầng" ds={["Tầng trên", "Tầng dưới"]} />
                 </div>
-
-
             </div>
         </div>
     );

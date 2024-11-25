@@ -12,15 +12,16 @@ const FillterButton = ({ title, ds }: any) => {
         seat: string[];
         flow: string[];
     }
+    let name: keyof FilterState;
+    if (title == "Loại xe")
+        name = "type"
+    if (title == "Hàng Ghế")
+        name = "seat"
+    if (title == "Tầng")
+        name = "flow"
     const { selectedFilters, setSelectedFilter } = context;
     const handleClick = (value: string) => {
-        let name: keyof FilterState;
-        if (title == "Loại xe")
-            name = "type"
-        if (title == "Hàng Ghế")
-            name = "seat"
-        if (title == "Tầng")
-            name = "flow"
+
         setSelectedFilter((prev) => ({
             ...prev,
             [name]: prev[name].includes(value)
@@ -29,11 +30,15 @@ const FillterButton = ({ title, ds }: any) => {
         }));
     }
     const countButton = () => {
-
+        console.log("//////////////////////////////////////", selectedFilters[name])
         return ds.map((item: string, index: number) => (
             <Button
                 onClick={() => handleClick(item)}
                 sx={{
+                    ...(selectedFilters[name].includes(item) && {
+                        background: 'orange',
+                        borderColor: '#000',
+                    }),
                     border: '1px solid #e5e7eb !important',
                     color: 'black',
                     marginRight: "10px",

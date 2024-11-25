@@ -57,7 +57,7 @@ const ListFillterItem = ({ data }: any) => {
 
     }
     useEffect(() => {
-        const countSeat = data.dsghe.filter((seat: any) => seat["trangThai"] == "Chưa đặt").length
+        const countSeat = data.dsghe.filter((seat: any) => seat["TrangThai"] == "Chưa đặt").length
         console.log('seatttttttttttttttttttttt', countSeat)
         setAvalibleSeat(countSeat);
         const timebd = data.tuyen[0].timebd;
@@ -104,7 +104,7 @@ const ListFillterItem = ({ data }: any) => {
                 </div>
                 <div className="col1292137172">
                     <div className="row21812881320">
-                        <div></div><span>{data.loaixe}</span> <div>{avalibleSeat} chỗ trống</div>
+                        <div></div><span>{data.Loaixe}</span> <div>{avalibleSeat} chỗ trống</div>
                     </div>
                     <div style={{ color: 'red', fontWeight: 'bold' }}>{data.price.toLocaleString('vi-VN')}đ</div>
                 </div>

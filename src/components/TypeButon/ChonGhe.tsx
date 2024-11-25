@@ -12,9 +12,9 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
             for (const ghe of listVe) {
                 const Ve = {
                     maghe: ghe,
-                    noidi: lichtrinh.noiDi,
-                    noiden: lichtrinh.noiDen,
-                    ngaydi: lichtrinh.ngayDi,
+                    noidi: lichtrinh.noidi,
+                    noiden: lichtrinh.noiden,
+                    ngaydi: lichtrinh.ngaydi,
                     price: lichtrinh.price
                 }
                 const respone = await fetch('http://localhost:8080/api', {
@@ -29,70 +29,72 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                 }
             }
             alert("Đặt vé thành công")
-            const updatedDsghe = data.map((ghe: any) => {
-                if (listVe.includes(ghe.ghe)) {
+            const updatedDsghe = lichtrinh.dsghe.map((ghe: any) => {
+                console.log()
+                if (listVe.includes(ghe.Ghe)) {
                     return {
                         ...ghe,
-                        trangThai: "Đặt"
+                        TrangThai: "Đặt"
                     };
                 }
                 return ghe;
             });
+            const updateLichtrinh = {
+                ...lichtrinh,
+                dsghe: updatedDsghe
+            }
             console.log("updategheeeeeeee", updatedDsghe)
+            console.log("updateltttttttttttttttt", updateLichtrinh)
             const datalt = await fetch(`http://localhost:8080/lichtrinh/${lichtrinh.idLichTrinh}`, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": 'application/json',
                 },
-                body: JSON.stringify(updatedDsghe),
-
+                body: JSON.stringify(
+                    updateLichtrinh
+                ),
             });
             if (!datalt.ok) {
                 throw new Error("Khong the set lich trinh")
             }
-
             setData(updatedDsghe)
             SetListVe([])
             setSelectedCount(0)
-
         } catch (err) {
             console.error("Lỗi khi đặt vé:", err)
             alert('Có lỗi xảy ra khi đặt vé!');
         }
     }
     const handleClick = (index: number, seat: string) => {
-        if (data[index].trangThai === "Chọn") {
+        if (data[index].TrangThai === "Chọn") {
             const newData = [...data];
             newData[index] = {
                 ...newData[index],
-                trangThai: "Chưa đặt"
+                TrangThai: "Chưa đặt"
             };
             setData(newData);
             setSelectedCount(prev => prev - 1);
             SetListVe(prev => prev.filter(seat => seat !== seat));
             return;
         }
-        if (data[index].trangThai === "Chưa đặt") {
+        if (data[index].TrangThai === "Chưa đặt") {
             if (selectedCount >= MAX_SEATS) {
                 alert("Bạn chỉ được chọn tối đa 5 ghế!");
                 return;
             }
-
             const newData = [...data];
             newData[index] = {
                 ...newData[index],
-                trangThai: "Chọn"
+                TrangThai: "Chọn"
             };
-
             setData(newData);
             setSelectedCount(prev => prev + 1);
             SetListVe(prev => [...prev, seat]);
         }
     }
-
     const renderSeat = (index: number, seatNumber: string) => {
         const seat = data[index];
-        if (seat.trangThai === "Đặt") {
+        if (seat.TrangThai === "Đặt") {
             return (
                 <td className="disabled-seat">
                     <img src="https://futabus.vn/images/icons/seat_disabled.svg" alt="seat" />
@@ -100,16 +102,14 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                 </td>
             );
         }
-
         return (
             <td onClick={() => handleClick(index, seatNumber)}>
-                {seat.trangThai === "Chưa đặt" && <img src="https://futabus.vn/images/icons/seat_active.svg" alt="seat" />}
-                {seat.trangThai === "Chọn" && <img src="https://futabus.vn/images/icons/seat_selecting.svg" alt="seat" />}
+                {seat.TrangThai === "Chưa đặt" && <img src="https://futabus.vn/images/icons/seat_active.svg" alt="seat" />}
+                {seat.TrangThai === "Chọn" && <img src="https://futabus.vn/images/icons/seat_selecting.svg" alt="seat" />}
                 <span>{seatNumber}</span>
             </td>
         );
     }
-
     return (
         <div className='col2318127u'>
             <div className="row32171277">

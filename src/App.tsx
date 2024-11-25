@@ -9,7 +9,10 @@ import FillterForm from './components/FillterForm'
 
 function App() {
   const [clickform, setClickForm] = useState(false);
-  const [result1, setResult1] = useState(null);
+  const [result1, setResult1] = useState({
+    dataTrip: [],
+    timecount: {}
+  })
   const [projectState, setProjectState] = useState<{
     selectedProjectId: null | undefined;
     project: any[];
@@ -26,14 +29,13 @@ function App() {
       }
     });
   }
-  console.log("result111111111111111111", result1)
+  console.log("result111111111111111111", result1.timecount)
   const toggleForm = () => {
     setClickForm((prev) => !prev)
   }
-  console.log(clickform)
   let content;
   if (projectState.selectedProjectId === null) {
-    content = <FillterForm data={result1}></FillterForm>
+    content = <FillterForm data={result1.dataTrip} count={result1.timecount}></FillterForm>
   } else if (projectState.selectedProjectId === undefined) {
     content = <Body></Body>
   }
