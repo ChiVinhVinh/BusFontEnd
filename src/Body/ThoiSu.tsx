@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ThoiSuTitle from './ThoiSuTitle';
-import './ThoiSu.css'
+import { Box, Typography, useTheme } from '@mui/material';
+
 const ListImg = [
     {
         img: [
@@ -38,34 +39,130 @@ const ListImg = [
         ], index: 5
     }
 ]
-
 const ThoiSu = () => {
     const [page, setPage] = useState(1);
+    const theme = useTheme();
     useEffect(() => {
         const interval = setInterval(() => {
-            setPage(prev => (prev % 5) + 1)
-        }, 10000)
+            setPage((prev) => (prev % 5) + 1);
+        }, 10000);
         return () => clearInterval(interval);
-    }, [])
+    }, []);
     const handleClick = (page: number) => {
         setPage(page);
-    }
+    };
     return (
-        <div className='col1111'>
-            <h1>tin tức mới</h1>
-            <div className='row100'>
-                <h6 className='ct'>Được khánh hàng tin tưởng và lựa chọn</h6>
-                <h6 className='rt'>Xem tất cả</h6>
-            </div>
-            <div className='row99'>
-                {ListImg[page - 1].img.map((item, index) =>
-                    <ThoiSuTitle key={index} img={item.anh} title={item.title} date={item.date} ></ThoiSuTitle>
-                )}
-            </div>
-            <ul className='listdot'>
-                {ListImg.map((item) => <li key={item.index}><div className={`dot ${page === item.index ? 'active' : ''}`} onClick={() => handleClick(item.index)}></div></li>)}
-            </ul>
-        </div>
-    )
-}
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                position: 'relative',
+                backgroundColor: 'rgb(255 247 245)',
+                border: '0 solid #e5e7eb',
+                padding: '50px',
+            }}
+        >
+            <Typography
+                component="h1"
+                sx={{
+                    color: '#00613d',
+                    fontSize: '28px',
+                    lineHeight: '33px',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold',
+                }}
+            >
+                Tin tức mới
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
+                }}
+            >
+                <Typography
+                    component="h6"
+                    sx={{
+                        position: 'absolute',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        fontSize: '16px',
+                        lineHeight: '21px',
+                        color: '#4a4a4a',
+                        marginTop: '8px',
+                    }}
+                >
+                    Được khách hàng tin tưởng và lựa chọn
+                </Typography>
+                <Typography
+                    component="h6"
+                    sx={{
+                        position: 'absolute',
+                        right: '22%',
+                        marginLeft: 'auto',
+                        cursor: 'pointer',
+                        fontSize: '15px',
+                        color: '#ef5222',
+                        display: 'block',
+                    }}
+                >
+                    Xem tất cả
+                </Typography>
+            </Box>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '40px 0px',
+                    padding: '50px',
+                }}
+            >
+                {ListImg[page - 1].img.map((item, index) => (
+                    <ThoiSuTitle
+                        key={index}
+                        img={item.anh}
+                        title={item.title}
+                        date={item.date}
+                    />
+                ))}
+            </Box>
+            <Box
+                component="ul"
+                sx={{
+                    display: 'flex',
+                    gap: theme.spacing(1),
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                }}
+            >
+                {ListImg.map((item) => (
+                    <Box
+                        component="li"
+                        key={item.index}
+                        sx={{
+                            '& .dot': {
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                backgroundColor: page === item.index ? '#00613d' : '#ccc',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            },
+                        }}
+                        onClick={() => handleClick(item.index)}
+                    >
+                        <Box className="dot" />
+                    </Box>
+                ))}
+            </Box>
+        </Box>
+    );
+};
+
 export default ThoiSu;

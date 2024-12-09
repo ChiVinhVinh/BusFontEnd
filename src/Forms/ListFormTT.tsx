@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useFormContext, Controller, FieldValues, Path } from 'react-hook-form';
 import { Autocomplete, TextField, Box, Stack } from '@mui/material';
-import './ListFormTT.css'
 type Props<T extends FieldValues> = {
     name: Path<T>;
     label: string;
@@ -15,7 +14,6 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
     const [selectedTT, setSelectedTT] = useState<string | null>(null);
     const [listTT, setListTT] = useState<string[]>(provinces);
     const [recentSearches, setRecentSearches] = useState<string[]>([]);
-
     const ref = useRef<HTMLDivElement | null>(null);
     console.log("locationnnnnnn", location)
     useEffect(() => {
@@ -30,14 +28,11 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
             setRecentSearches(JSON.parse(savedSearches));
         }
     }, []);
-
     useEffect(() => {
-
         if (recentSearches.length > 0) {
             localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
         }
     }, [recentSearches]);
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -53,7 +48,6 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
     const handleOpenClick = () => {
         setOpenBox(true);
     };
-
     const handleInnerSelect = (item: string) => {
         setSelectedTT(item);
         setOpenBox(false);
@@ -63,14 +57,12 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
             setRecentSearches(updatedSearches);
         }
     };
-
     const inputChange = (event: React.ChangeEvent<{}>, value: string) => {
         const filteredProvinces = provinces.filter(province =>
             province.toLocaleLowerCase().includes(value.toLocaleLowerCase())
         );
         setListTT(filteredProvinces);
     };
-
     return (
         <div style={{ position: 'relative', width: '257px', }}>
             <Controller
@@ -81,11 +73,11 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
                     <div>
                         <span style={{ textAlign: "left", width: '100%', display: "block", paddingLeft: '20px' }}>{label}</span>
                         <Autocomplete
-
                             value={selectedTT || ''}
                             onChange={(event, newValue) => setSelectedTT(newValue)}
                             open={false}
                             options={provinces}
+                            onInputChange={inputChange}
                             renderInput={(params) => <TextField {...params} onClick={handleOpenClick} InputProps={{
                                 ...params.InputProps,
                                 endAdornment: (
@@ -111,7 +103,8 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
                         backgroundColor: 'white',
                         padding: 1,
                         borderRadius: '10px',
-                        textAlign: 'left'
+                        textAlign: 'left',
+                        boxShadow: '20px 20px 50px 15px grey'
                     }}
                 >
                     <Autocomplete
@@ -141,7 +134,7 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
                                 {item}
                             </div>
                         ))}
-                        {listTT.length < 2 && <span className='dsdsds'>Không tìm địa điểm</span>}
+                        {listTT.length < 2 && <span style={{ color: 'rgb(162, 171, 179)', padding: '1.25rem' }}>Không tìm địa điểm</span>}
                     </Box>
 
                     <Box sx={{ marginTop: '20px' }}>

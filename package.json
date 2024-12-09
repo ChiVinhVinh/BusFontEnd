@@ -17,6 +17,8 @@
     "@mui/material": "^6.1.6",
     "@mui/styled-engine-sc": "^6.1.6",
     "@mui/x-date-pickers": "^7.22.2",
+    "ag-grid-community": "^32.3.3",
+    "ag-grid-react": "^32.3.3",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "react": "^18.3.1",

@@ -1,4 +1,4 @@
-import './Body.css'
+
 import InfoForm from './InfoForm';
 import TitleForm from './TitleForm';
 import BusLine from './BusLine';

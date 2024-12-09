@@ -7,11 +7,14 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
     const [selectedCount, setSelectedCount] = useState(0);
     const [listVe, SetListVe] = useState<string[]>([])
     const MAX_SEATS = 5;
+
+    console.log("dataaaaaaaaaaaa", data)
     const handleClickPost = async () => {
         try {
             for (const ghe of listVe) {
                 const Ve = {
                     maghe: ghe,
+                    idLichTrinh: lichtrinh.idLichTrinh,
                     noidi: lichtrinh.noidi,
                     noiden: lichtrinh.noiden,
                     ngaydi: lichtrinh.ngaydi,
@@ -31,27 +34,24 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
             alert("Đặt vé thành công")
             const updatedDsghe = lichtrinh.dsghe.map((ghe: any) => {
                 console.log()
-                if (listVe.includes(ghe.Ghe)) {
+                if (listVe.includes(ghe.ghe)) {
                     return {
                         ...ghe,
-                        TrangThai: "Đặt"
+                        trangthai: "Đặt"
                     };
                 }
                 return ghe;
             });
-            const updateLichtrinh = {
-                ...lichtrinh,
-                dsghe: updatedDsghe
-            }
+
             console.log("updategheeeeeeee", updatedDsghe)
-            console.log("updateltttttttttttttttt", updateLichtrinh)
+            console.log("updateltttttttttttttttt", lichtrinh)
             const datalt = await fetch(`http://localhost:8080/lichtrinh/${lichtrinh.idLichTrinh}`, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": 'application/json',
                 },
                 body: JSON.stringify(
-                    updateLichtrinh
+                    lichtrinh
                 ),
             });
             if (!datalt.ok) {
@@ -65,51 +65,112 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
             alert('Có lỗi xảy ra khi đặt vé!');
         }
     }
-    const handleClick = (index: number, seat: string) => {
-        if (data[index].TrangThai === "Chọn") {
+    const handleClick = (seat: any) => {
+        const index = data.findIndex((item: any) => item.ghe === seat.ghe);
+        if (index === -1) return;
+
+        if (data[index].trangthai === "Chọn") {
             const newData = [...data];
             newData[index] = {
                 ...newData[index],
-                TrangThai: "Chưa đặt"
+                trangthai: "Chưa đặt"
             };
             setData(newData);
             setSelectedCount(prev => prev - 1);
-            SetListVe(prev => prev.filter(seat => seat !== seat));
+            SetListVe(prev => prev.filter(v => v !== seat.ghe));
             return;
         }
-        if (data[index].TrangThai === "Chưa đặt") {
+        if (data[index].trangthai === "Chưa đặt") {
             if (selectedCount >= MAX_SEATS) {
                 alert("Bạn chỉ được chọn tối đa 5 ghế!");
                 return;
             }
+
             const newData = [...data];
             newData[index] = {
                 ...newData[index],
-                TrangThai: "Chọn"
+                trangthai: "Chọn"
             };
             setData(newData);
             setSelectedCount(prev => prev + 1);
-            SetListVe(prev => [...prev, seat]);
+            SetListVe(prev => [...prev, seat.ghe]);
         }
     }
-    const renderSeat = (index: number, seatNumber: string) => {
-        const seat = data[index];
-        if (seat.TrangThai === "Đặt") {
-            return (
-                <td className="disabled-seat">
-                    <img src="https://futabus.vn/images/icons/seat_disabled.svg" alt="seat" />
-                    <span>{seatNumber}</span>
-                </td>
-            );
-        }
+    const Rowtd = (rowSeats: any, start: any) => {
+        const seatsInRow = Array(5).fill(null);
+
+        rowSeats.forEach((seat: any) => {
+            const position = (seat.vitri - start) % 5;
+            if (position >= 0 && position < seatsInRow.length) {
+                seatsInRow[position] = seat;
+            }
+        });
         return (
-            <td onClick={() => handleClick(index, seatNumber)}>
-                {seat.TrangThai === "Chưa đặt" && <img src="https://futabus.vn/images/icons/seat_active.svg" alt="seat" />}
-                {seat.TrangThai === "Chọn" && <img src="https://futabus.vn/images/icons/seat_selecting.svg" alt="seat" />}
-                <span>{seatNumber}</span>
-            </td>
+            <tr>
+                {seatsInRow.map((seat, index) =>
+                    seat ? (
+                        <td key={index} onClick={() => handleClick(seat)}>
+                            <img
+                                src={
+                                    seat.trangthai === "Đặt"
+                                        ? "https://futabus.vn/images/icons/seat_disabled.svg"
+                                        : seat.trangthai === "Chọn"
+                                            ? "https://futabus.vn/images/icons/seat_selecting.svg"
+                                            : "https://futabus.vn/images/icons/seat_active.svg"
+                                }
+                                alt="seat"
+                            />
+                            <span>{seat.ghe}</span>
+                        </td>
+                    ) : (
+                        <td key={index}></td>
+                    )
+                )}
+            </tr>
         );
-    }
+    };
+    const renderSeat = () => {
+        const upperFloorSeats = data.filter((seat: any) => seat.vitri % 2 === 0);
+        const lowerFloorSeats = data.filter((seat: any) => seat.vitri % 2 !== 0);
+        return (
+
+            <div className="rowdasdasads">
+                <div className="floor lower-floor">
+                    <h3>Tầng dưới</h3>
+                    <table>
+                        <tbody>
+                            {Array.from({ length: Math.ceil(30 / 5) }, (_, i) =>
+                                Rowtd(
+                                    lowerFloorSeats.filter(
+                                        (seat: any) =>
+                                            seat.vitri > i * 10 && seat.vitri <= (i + 1) * 10
+                                    ),
+                                    i * 10 + 1,
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="floor upper-floor">
+                    <h3>Tầng trên</h3>
+                    <table>
+                        <tbody>
+                            {Array.from({ length: Math.ceil(30 / 5) }, (_, i) =>
+                                Rowtd(
+                                    upperFloorSeats.filter(
+                                        (seat: any) =>
+                                            seat.vitri > i * 10 && seat.vitri <= (i + 1) * 10
+                                    ),
+                                    i * 10 + 1,
+
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    };
     return (
         <div className='col2318127u'>
             <div className="row32171277">
@@ -126,102 +187,7 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                     <span>Đang chọn</span>
                 </div>
             </div>
-            <div className="rowdasdasads">
-                <div className=''>
-                    <span>Tầng dưới</span>
-                    <table>
-                        <tbody>
-                            <tr>
-                                {renderSeat(0, "A01")}
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                {renderSeat(1, "A02")}
-                            </tr>
-                            <tr>
-                                {renderSeat(2, "A03")}
-                                <td></td>
-                                {renderSeat(3, "A04")}
-                                <td></td>
-                                {renderSeat(4, "A05")}
-                            </tr>
-                            <tr>
-                                {renderSeat(5, "A06")}
-                                <td></td>
-                                {renderSeat(6, "A07")}
-                                <td></td>
-                                {renderSeat(7, "A08")}
-                            </tr>
-                            <tr>
-                                {renderSeat(8, "A09")}
-                                <td></td>
-                                {renderSeat(9, "A10")}
-                                <td></td>
-                                {renderSeat(10, "A11")}
-                            </tr>
-                            <tr>
-                                {renderSeat(11, "A12")}
-                                <td></td>
-                                {renderSeat(12, "A13")}
-                            </tr>
-                            <tr>
-                                {renderSeat(13, "A14")}
-                                {renderSeat(14, "A15")}
-                                <td></td>
-                                {renderSeat(15, "A16")}
-                                {renderSeat(16, "A17")}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <span>Tầng trên</span>
-                    <table>
-                        <tbody>
-                            <tr>
-                                {renderSeat(17, "B01")}
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                {renderSeat(18, "B02")}
-                            </tr>
-                            <tr>
-                                {renderSeat(19, "B03")}
-                                <td></td>
-                                {renderSeat(20, "B04")}
-                                <td></td>
-                                {renderSeat(21, "B05")}
-                            </tr>
-                            <tr>
-                                {renderSeat(22, "B06")}
-                                <td></td>
-                                {renderSeat(23, "B07")}
-                                <td></td>
-                                {renderSeat(24, "B08")}
-                            </tr>
-                            <tr>
-                                {renderSeat(25, "B09")}
-                                <td></td>
-                                {renderSeat(26, "B10")}
-                                <td></td>
-                                {renderSeat(27, "B11")}
-                            </tr>
-                            <tr>
-                                {renderSeat(28, "B12")}
-                                <td></td>
-                                {renderSeat(29, "B13")}
-                            </tr>
-                            <tr>
-                                {renderSeat(30, "B14")}
-                                {renderSeat(31, "B15")}
-                                <td></td>
-                                {renderSeat(32, "B16")}
-                                {renderSeat(33, "B17")}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {renderSeat()}
             <div style={{ height: '5rem', borderTop: '2px soild red', width: '100%' }}>
                 {selectedCount > 0 ? <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>

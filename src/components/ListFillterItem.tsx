@@ -57,11 +57,11 @@ const ListFillterItem = ({ data }: any) => {
 
     }
     useEffect(() => {
-        const countSeat = data.dsghe.filter((seat: any) => seat["TrangThai"] == "Chưa đặt").length
+        const countSeat = data.dsghe.filter((seat: any) => seat["trangthai"] == "Chưa đặt").length
         console.log('seatttttttttttttttttttttt', countSeat)
         setAvalibleSeat(countSeat);
-        const timebd = data.tuyen[0].timebd;
-        const timekt = data.tuyen[data.tuyen.length - 1].timekt;
+        const timebd = data.dstuyen[0].time;
+        const timekt = data.dstuyen[data.dstuyen.length - 1].time;
         const calulateTime = (start: string, end: string) => {
             const [starHour, starMin] = start.split(':').map(Number);
             const [endHour, endMin] = end.split(':').map(Number);
@@ -85,7 +85,7 @@ const ListFillterItem = ({ data }: any) => {
             <div className="row31223215827">
                 <div className="col312322121">
                     <div className="row321111122">
-                        <span>{data.tuyen[0].timebd}</span>
+                        <span>{data.dstuyen[0].time}</span>
                         <img src="https://futabus.vn/images/icons/pickup.svg"></img>
                         <div style={{ borderTop: '2px dotted darkgreen', width: '76px', height: '3px', padding: '0px ' }}></div>
                         <div className="col3211217">
@@ -95,11 +95,11 @@ const ListFillterItem = ({ data }: any) => {
                         </div>
                         <div style={{ borderTop: '2px dotted darkgreen', width: '76px', height: '3px', padding: '0px ' }}></div>
                         <img src="https://futabus.vn/images/icons/station.svg"></img>
-                        <span>{data.tuyen[data.tuyen.length - 1].timekt}</span>
+                        <span>{data.dstuyen[data.dstuyen.length - 1].time}</span>
                     </div>
                     <div className="row271217171">
-                        <span>{data.tuyen[0].kh}</span>
-                        <span>{data.tuyen[data.tuyen.length - 1].kt}</span>
+                        <span>{data.dstuyen[0].Khoihanh}</span>
+                        <span>{data.dstuyen[data.dstuyen.length - 1].Khoihanh}</span>
                     </div>
                 </div>
                 <div className="col1292137172">

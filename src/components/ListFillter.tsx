@@ -16,19 +16,20 @@ const ListFillter = ({ data }: any) => {
     if (!context) {
         throw new Error('useFilterForm must be used within a FillterFormProvider');
     }
+
     useEffect(() => {
         let sortdata = [...data]
         let sortConditions: any[] = [];
         const sortOrders: any[] = [];
         if (clickButton.selectGhe) {
             sortConditions.push((item: any) => {
-                return item.dsghe.filter((ghe: any) => ghe.TrangThai === "Chưa đặt").length;
+                return item.dsghe.filter((ghe: any) => ghe.trangthai === "Chưa đặt").length;
             });
             sortOrders.push('desc');
         }
         if (clickButton.selecTime) {
             sortConditions.push((item: any) => {
-                const [hours, minuates] = item.tuyen[0].timebd.split(':');
+                const [hours, minuates] = item.dstuyen[0].timebd.split(':');
                 return parseInt(hours) * 60 + parseInt(minuates);
             });
             sortOrders.push('asc');
@@ -41,14 +42,15 @@ const ListFillter = ({ data }: any) => {
             sortdata = _.orderBy(sortdata, sortConditions, sortOrders);
         }
         setSearchData(sortdata)
-    }, [clickButton, data])
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    }, [clickButton])
     const { selectedFilters } = context;
     console.log("selectedFiltersselectedFilters", selectedFilters)
     useEffect(() => {
         let filteredData = [...data];
         if (selectedFilters.time.length > 0) {
             filteredData = filteredData.filter(item => {
-                const [itemHour, itemMin] = item.tuyen[0].timebd.split(':');
+                const [itemHour, itemMin] = item.dstuyen[0].time.split(':');
                 const itemTime = parseInt(itemHour) * 60 + parseInt(itemMin);
                 return selectedFilters.time.some(timeRange => {
                     const [start, end] = timeRange.split('-');
@@ -56,13 +58,13 @@ const ListFillter = ({ data }: any) => {
                     const [endHour, endMin] = end.split(':');
                     const starTime = parseInt(startHour) * 60 + parseInt(starMin);
                     const endTime = parseInt(endHour) * 60 + parseInt(endMin);
-                    return itemTime >= starTime && itemTime <= endTime;
+                    return itemTime >= starTime && itemTime < endTime;
                 })
             })
         }
         if (selectedFilters.seat.length > 0) {
             filteredData = filteredData.filter(item => {
-                const avalabSeat = item.dsghe.filter((ghe: any) => ghe.TrangThai === "Chưa đặt").map((ghe: any) => ghe.Ghe)
+                const avalabSeat = item.dsghe.filter((ghe: any) => ghe.trangthai === "Chưa đặt").map((ghe: any) => ghe.ghe)
                 const HangDau = ['A01', 'A02', 'A03', 'A04', 'A05', 'B01', 'B02', 'B03', 'B04', 'B05'];
                 const HangGiua = ['A06', 'A07', 'A08', 'A09', 'A10', 'A11', 'B06', 'B07', 'B08', 'B09', 'B10', 'B11'];
                 const Hangcuoi = ['A12', 'A13', 'A14', 'A15', 'A16', 'A17', 'B12', 'B13', 'B14', 'B15', 'B16', 'B17'];
@@ -75,7 +77,7 @@ const ListFillter = ({ data }: any) => {
 
         if (selectedFilters.flow.length > 0) {
             filteredData = filteredData.filter(item => {
-                const avalabSeat = item.dsghe.filter((ghe: any) => ghe.TrangThai === "Chưa đặt").map((ghe: any) => ghe.Ghe)
+                const avalabSeat = item.dsghe.filter((ghe: any) => ghe.trangthai === "Chưa đặt").map((ghe: any) => ghe.ghe)
                 console.log("avalabSeatavalabSeatavalabSeat", avalabSeat)
                 const hasTangTren = selectedFilters.flow.includes("Tầng trên") &&
                     avalabSeat.some((seat: any) => seat.startsWith('A'));

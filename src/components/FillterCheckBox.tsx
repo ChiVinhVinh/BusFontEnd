@@ -73,7 +73,7 @@ const FillterCheckBox = ({ count }: any) => {
                                     onChange={(e) => handleTimeChange('12:00-18:00', e.target.checked)}
                                 />
                             }
-                            label={`Buổi chiều 12:00-18:00 (${count.AfterNoon})`}
+                            label={`Buổi chiều 12:00-18:00 (${count.Afternoon})`}
                         />
                         <FormControlLabel
                             control={

@@ -14,7 +14,6 @@ const FormChatBox = () => {
             <div className='backgroungtitle'>
                 <span className='title'>Quý khách vui lòng cho chúng tôi thông tin để thuận tiện hỗ trợ</span>
             </div>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl component="fieldset" error={!!errors.title}>
                     <FormLabel component="legend">Quý Danh</FormLabel>
@@ -80,7 +79,6 @@ const FormChatBox = () => {
                                 fullWidth
                             />
                         )}
-
                     />
                 </Box>
                 <Box mb={2}>
@@ -136,8 +134,6 @@ const FormChatBox = () => {
                     </FormGroup>
                     {errors.needhelp && <FormHelperText></FormHelperText>}
                 </FormControl>
-
-
                 <Button type="submit" variant="contained" color="primary">Bắt đầu trò truyện</Button>
             </form>
         </div>
