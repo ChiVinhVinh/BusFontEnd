@@ -18,7 +18,7 @@ interface FormData {
     trinhtu: number;
     time: string;
 }
-const ListLocation = ({ data, onLocationSelect, onClose }: { data: LocationData[], onLocationSelect: any, onClose: any }) => {
+const ListLocation = ({ data, onLocationSelect, onClose, onAdd }: { data: LocationData[], onLocationSelect: any, onClose: any, onAdd: any }) => {
     const {
         control,
         handleSubmit,
@@ -38,6 +38,7 @@ const ListLocation = ({ data, onLocationSelect, onClose }: { data: LocationData[
     const onSubmit = (formData: FormData) => {
         console.log(formData);
         onLocationSelect(formData.selectedLocation, formData.selectedStation, formData.trinhtu, formData.time);
+        onAdd(formData.selectedLocation, formData.selectedStation, formData.trinhtu, formData.time);
         onClose();
     };
     return (

@@ -6,6 +6,7 @@ import { ListFormTT } from '../Forms/ListFormTT';
 import DatePickerComponent from '../Forms/DatePickerComponent';
 import TicketSelect from '../Forms/TicketSelect';
 import dayjs from 'dayjs';
+import { fetchTrips } from '../response/reponse';
 
 function SearchForm({ onChangeProject, result1 }: any) {
     const methods = useForm();
@@ -15,8 +16,8 @@ function SearchForm({ onChangeProject, result1 }: any) {
     const [diemdi, setDiemdi] = useState<string>("");
     const [diemden, setDiemden] = useState<string>("");
     const [selectDate, setSelectDate] = useState<string>(dayjs().format('DD-MM-YYYY'));
+    const [selectBackdate, setBackDate] = useState<string>(dayjs().format('DD-MM-YYYY'));
     const [recentSearchs, setRecentSearchs] = useState<any[]>([]);
-
     useEffect(() => {
         const dataTT = async () => {
             try {
@@ -34,13 +35,11 @@ function SearchForm({ onChangeProject, result1 }: any) {
             setRecentSearchs(JSON.parse(saveSearchs));
         }
     }, []);
-
     const handleClickValue = (data: any) => {
         setDiemden(data.diemden);
         setDiemdi(data.diemdi);
         setSelectDate(data.selectDate);
     }
-
     const onSubmit = async () => {
         try {
             const newSearch = {
@@ -48,6 +47,7 @@ function SearchForm({ onChangeProject, result1 }: any) {
                 diemden,
                 selectDate,
             };
+
             const saveSearch = localStorage.getItem('recentSearchs');
             let updateSearch = saveSearch ? JSON.parse(saveSearch) : [];
             updateSearch.unshift(newSearch);
@@ -57,21 +57,7 @@ function SearchForm({ onChangeProject, result1 }: any) {
             localStorage.setItem('recentSearchs', JSON.stringify(updateSearch));
             setRecentSearchs(updateSearch);
 
-            const response = await fetch('http://localhost:8080/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    DiemDi: diemdi,
-                    DiemDen: diemden,
-                    NgayDi: selectDate,
-                }),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to fetch matching trips");
-            }
-            const { Trip, TimeCounts } = await response.json();
+            const { Trip, TimeCounts } = await fetchTrips(diemdi, diemden, selectDate);
             result1({
                 dataTrip: Trip,
                 timecount: TimeCounts
@@ -141,7 +127,7 @@ function SearchForm({ onChangeProject, result1 }: any) {
                             </Grid>
                             {selectKh === 'Khứ hồi' && (
                                 <Grid item xs={4} md={5}>
-                                    <DatePickerComponent name='selectDateVề' label="Ngày về" date={setSelectDate} />
+                                    <DatePickerComponent name='selectDateVề' label="Ngày về" date={setBackDate} />
                                 </Grid>
                             )}
                             <Grid item xs={selectKh === "Khứ hồi" ? 4 : 6} md={selectKh === 'Khứ hồi' ? 2 : 6}>

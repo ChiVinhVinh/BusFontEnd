@@ -1,17 +1,13 @@
 import { Button, Stack } from "@mui/material";
-import QuanlyLichTrinh from "./Collection/lichtrinh";
 import { useState } from "react";
-import QuanlyVe from "./Collection/Ve";
-import QuanlyXe from "./Collection/Xe";
-import Quanlydiadiem from "./Collection/diadiem";
-import QuanlyTuyen from "./Collection/Tuyen";
 import { Link, Route, Routes } from "react-router-dom";
-import QuanlySeatDetail from "./Collection/Detail/dsgheDetail";
-import QuanlyStationDetail from "./Collection/Detail/StationDetail";
-import QuanlyTuyenDetail from "./Collection/Detail/TuyenDetail";
-import QuanlyVe_Tuyen from "./Collection/Ve_Tuyen";
-import QuanlyPrice from "./Collection/Price";
-
+// import QuanlySeatDetail from "./Collection/Detail/dsgheDetail";
+// import QuanlyStationDetail from "./Collection/Detail/StationDetail";
+// import QuanlyTuyenDetail from "./Collection/Detail/TuyenDetail";
+import DynamicTable from "./Collection/DyTable";
+import { columnDiaDiem, columnPrice, columnTuyen, columnlichtrinh, columnVeTuyen, columnsVe, columnsXe } from "./Collection/typeColumn";
+import TableDetail from "./Collection/Detail/TypeDetail";
+import { columndsghe, columnStaion, columnTuyendetail, } from "./Collection/Detail/Detailcolumn"
 const CRUD = () => {
   const [selectQuanly, setSelectQuanly] = useState({
     selectVe: false,
@@ -23,7 +19,6 @@ const CRUD = () => {
     selectPrice: false
   });
   const [typebuton, setTypebutton] = useState("");
-
   const handleClick = (key: string) => {
     setSelectQuanly({
       selectVe: false,
@@ -37,7 +32,6 @@ const CRUD = () => {
     });
     setTypebutton(key);
   };
-
   return (
     <Stack direction="column" spacing={2} alignItems="center">
       <Stack
@@ -84,7 +78,6 @@ const CRUD = () => {
           ))}
         </Stack>
 
-
         <Link
           to="/"
           style={{
@@ -102,22 +95,21 @@ const CRUD = () => {
           path="/"
           element={
             <>
-              {selectQuanly.selecXe && <QuanlyXe />}
-              {selectQuanly.selectDiaDiem && <Quanlydiadiem />}
-              {selectQuanly.selectLichTrinh && <QuanlyLichTrinh />}
-              {selectQuanly.selectTuyen && <QuanlyTuyen />}
-              {selectQuanly.selectVe && <QuanlyVe />}
-              {selectQuanly.selectVt && <QuanlyVe_Tuyen></QuanlyVe_Tuyen>}
-              {selectQuanly.selectPrice && <QuanlyPrice></QuanlyPrice>}
+              {selectQuanly.selecXe && <DynamicTable dataType="xe" endpoint="http://localhost:8080/quanlyxe" />}
+              {selectQuanly.selectDiaDiem && <DynamicTable dataType="diadiem" endpoint="http://localhost:8080/quanlydd" />}
+              {selectQuanly.selectLichTrinh && <DynamicTable dataType="lichtrinh" endpoint="http://localhost:8080/quanlylt" />}
+              {selectQuanly.selectTuyen && <DynamicTable dataType="tuyen" endpoint="http://localhost:8080/quanlyt" />}
+              {selectQuanly.selectVe && <DynamicTable dataType="ve" endpoint="http://localhost:8080/quanlyve" />}
+              {selectQuanly.selectVt && <DynamicTable dataType="vetuyen" endpoint="http://localhost:8080/quanlyve_tuyen" />}
+              {selectQuanly.selectPrice && <DynamicTable dataType="price" endpoint="http://localhost:8080/quanlyprice" />}
             </>
           }
         />
-        <Route path="dsghedetail" element={<QuanlySeatDetail />} />
-        <Route path="dsStationDetail" element={<QuanlyStationDetail />} />
-        <Route path="dsRouterDetail" element={<QuanlyTuyenDetail></QuanlyTuyenDetail>} />
+        <Route path="dsghedetail" element={<TableDetail dataType="dsghe" column={columndsghe(null)} endpoint="http://localhost:8080/quanlyseat/" />} />
+        <Route path="dsStationDetail" element={<TableDetail dataType="station" column={columnStaion(null)} endpoint="http://localhost:8080/quanlydd/" />} />
+        <Route path="dsRouterDetail" element={<TableDetail dataType="tuyen" column={columnTuyendetail(null)} endpoint="http://localhost:8080/quanlyt/" />} />
       </Routes>
     </Stack>
   );
 };
-
 export default CRUD;

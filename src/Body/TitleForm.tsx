@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
-
-// Styled Components using MUI
 const CarouselContainer = styled(Box)({
     overflow: "hidden",
     width: "100%",
@@ -59,8 +57,6 @@ const Dot = styled(IconButton)(({ isActive }: { isActive: boolean }) => ({
     cursor: "pointer",
     transition: "background-color 0.3s ease",
 }));
-
-// Image Data
 const ListImg = [
     {
         img: [
@@ -123,5 +119,4 @@ const TitleForm = () => {
         </CarouselContainer>
     );
 };
-
 export default TitleForm;

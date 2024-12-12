@@ -1,5 +1,4 @@
 import ListFillterItem from "./ListFillterItem";
-import './ListFillter.css'
 import { useContext, useEffect, useState } from "react";
 import { FillterFormContext } from "./FillterFormContext";
 import _, { result } from 'lodash';
@@ -11,7 +10,7 @@ const ListFillter = ({ data }: any) => {
     })
 
     const [searchData, setSearchData] = useState(data)
-    console.log("sadsaddsadadasdsadasasdsadsadadsadsdsa", searchData)
+    console.log("dataaaaaa", searchData)
     const context = useContext(FillterFormContext);
     if (!context) {
         throw new Error('useFilterForm must be used within a FillterFormProvider');
@@ -29,7 +28,7 @@ const ListFillter = ({ data }: any) => {
         }
         if (clickButton.selecTime) {
             sortConditions.push((item: any) => {
-                const [hours, minuates] = item.dstuyen[0].timebd.split(':');
+                const [hours, minuates] = item.dstuyen[0].time.split(':');
                 return parseInt(hours) * 60 + parseInt(minuates);
             });
             sortOrders.push('asc');
@@ -107,33 +106,115 @@ const ListFillter = ({ data }: any) => {
     }
     console.log('data1', data)
     return (
-        <div className="col21312312">
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+            }}
+        >
             {data && data.length > 0 ? (
-                <div className="col312211">
-                    <span style={{ fontSize: '1.25rem', lineHeight: '1.75rem' }}>{data[0].noidi}-{data[0].noiden}({data.length})</span>
-                    <div className="row5712d">
-                        <div className={`row821717 ${clickButton.selectCost ? 'active1' : ''}`} onClick={() => handOnClick("Giá rẻ bất ngờ")}>
-                            <img style={{ width: "20px", height: "20px" }} src={'https://futabus.vn/images/icons/save_money.svg'}></img>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'start',
+                        gap: '20px',
+                    }}
+                >
+                    <span style={{ fontSize: '1.25rem', lineHeight: '1.75rem' }}>
+                        {data[0].noidi}-{data[0].noiden}({data.length})
+                    </span>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '20px',
+                        }}
+                    >
+                        <div
+                            onClick={() => handOnClick('Giá rẻ bất ngờ')}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '5px',
+                                padding: '3px 20px',
+                                cursor: 'pointer',
+                                border: '1px solid red',
+                                borderRadius: '5px',
+                                color: clickButton.selectCost ? '#EF5222' : 'inherit',
+                            }}
+                        >
+                            <img
+                                style={{ width: '20px', height: '20px' }}
+                                src={'https://futabus.vn/images/icons/save_money.svg'}
+                                alt="icon"
+                            />
                             <span style={{ fontSize: '16px' }}>Giá rẻ bất ngờ</span>
-
                         </div>
-                        <div className={`row821717 ${clickButton.selecTime ? 'active1' : ''}`} onClick={() => handOnClick("Giờ khởi hành")}>
-                            <img style={{ width: "20px", height: "20px" }} src={'https://futabus.vn/images/icons/clock.svg'}></img>
+                        <div
+                            onClick={() => handOnClick('Giờ khởi hành')}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '5px',
+                                padding: '3px 20px',
+                                cursor: 'pointer',
+                                border: '1px solid red',
+                                borderRadius: '5px',
+                                color: clickButton.selecTime ? '#EF5222' : 'inherit',
+                            }}
+                        >
+                            <img
+                                style={{ width: '20px', height: '20px' }}
+                                src={'https://futabus.vn/images/icons/clock.svg'}
+                                alt="icon"
+                            />
                             <span style={{ fontSize: '16px' }}>Giờ khởi hành</span>
                         </div>
-                        <div className={`row821717 ${clickButton.selectGhe ? 'active1' : ''}`} onClick={() => handOnClick("Ghế trống")}>
-                            <img style={{ width: "20px", height: "20px" }} src={'https://futabus.vn/images/icons/seat.svg'}></img>
+                        <div
+                            onClick={() => handOnClick('Ghế trống')}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '5px',
+                                padding: '3px 20px',
+                                cursor: 'pointer',
+                                border: '1px solid red',
+                                borderRadius: '5px',
+                                color: clickButton.selectGhe ? '#EF5222' : 'inherit',
+                            }}
+                        >
+                            <img
+                                style={{ width: '20px', height: '20px' }}
+                                src={'https://futabus.vn/images/icons/seat.svg'}
+                                alt="icon"
+                            />
                             <span style={{ fontSize: '16px' }}>Ghế trống</span>
                         </div>
                     </div>
                     {searchData.map((item: any, index: number) => (
                         <ListFillterItem key={index} data={item} />
                     ))}
-                </div>) : <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <span>Không có chuyến đi nào</span>
-                <img style={{ width: "20rem", height: '20rem' }} src="https://futabus.vn/images/empty_list.svg"></img>
-            </div>}
+                </div>
+            ) : (
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <span>Không có chuyến đi nào</span>
+                    <img
+                        style={{ width: '20rem', height: '20rem' }}
+                        src="https://futabus.vn/images/empty_list.svg"
+                        alt="empty"
+                    />
+                </div>
+            )}
         </div>
+
     )
 }
 

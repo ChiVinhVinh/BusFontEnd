@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useFormContext, Controller, FieldValues, Path } from 'react-hook-form';
 import { Autocomplete, TextField, Box, Stack } from '@mui/material';
+import unidecode from 'unidecode';
 type Props<T extends FieldValues> = {
     name: Path<T>;
     label: string;
@@ -58,8 +59,9 @@ export function ListFormTT<T extends FieldValues>({ name, label, provinces, loca
         }
     };
     const inputChange = (event: React.ChangeEvent<{}>, value: string) => {
+        setSelectedTT(value);
         const filteredProvinces = provinces.filter(province =>
-            province.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+            unidecode(province.toLowerCase()).includes(unidecode(value.toLocaleLowerCase()))
         );
         setListTT(filteredProvinces);
     };

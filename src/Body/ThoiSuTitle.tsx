@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 
 const ThoiSuTitle = ({ img, title, date }: any) => {
+    console.log(img, title, date);
     return (
         <Box
             sx={{

@@ -1,5 +1,4 @@
-import { Button } from "@mui/material";
-import './FillterButton.css'
+import { Button, Stack, Typography } from "@mui/material";
 import { FillterFormContext } from "./FillterFormContext";
 import { useContext } from "react";
 const FillterButton = ({ title, ds }: any) => {
@@ -29,7 +28,7 @@ const FillterButton = ({ title, ds }: any) => {
         }));
     }
     const countButton = () => {
-        console.log("//////////////////////////////////////", selectedFilters[name])
+
         return ds.map((item: string, index: number) => (
             <Button
                 onClick={() => handleClick(item)}
@@ -51,12 +50,20 @@ const FillterButton = ({ title, ds }: any) => {
         ));
     }
     return (
-        <div className="coldsasa" >
-            <span>{title}</span>
-            <div>
-                {countButton()}
-            </div>
-        </div>
+        <Stack
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "left",
+                borderBottom: "2px solid #e5e7eb",
+                padding: "5px",
+                width: "100%",
+                gap: "10px",
+            }}
+        >
+            <Typography>{title}</Typography>
+            <div>{countButton()}</div>
+        </Stack>
     )
 }
 export default FillterButton;

@@ -1,19 +1,33 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Checkbox, FormControlLabel, Button, FormControl, FormLabel, FormGroup, FormHelperText, TextField, Radio, Box } from '@mui/material';
-import './FormChatBox.css';
 
 const FormChatBox = () => {
     const { control, formState: { errors }, handleSubmit } = useForm();
 
     const onSubmit = () => {
-
     };
 
     return (
-        <div className='chat-box-form'>
-            <div className='backgroungtitle'>
-                <span className='title'>Quý khách vui lòng cho chúng tôi thông tin để thuận tiện hỗ trợ</span>
-            </div>
+        <Box sx={{
+            width: '100%',
+            maxWidth: '300px',
+            height: 'auto',
+            backgroundColor: '#fff',
+            borderColor: '#FB6400',
+            border: '4px solid orange',
+            padding: '15px'
+        }}>
+            <Box sx={{
+                backgroundColor: '#FB6400',
+                width: '100%',
+                boxSizing: 'border-box'
+            }}>
+                <Box component="span" sx={{
+                    color: '#fff'
+                }}>
+                    Quý khách vui lòng cho chúng tôi thông tin để thuận tiện hỗ trợ
+                </Box>
+            </Box>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl component="fieldset" error={!!errors.title}>
                     <FormLabel component="legend">Quý Danh</FormLabel>
@@ -26,6 +40,7 @@ const FormChatBox = () => {
                                 <>
                                     <FormControlLabel
                                         control={<Radio sx={{
+                                            transform: 'scale(0.9)',
                                             '&.Mui-checked': {
                                                 color: 'orange',
                                             }
@@ -34,6 +49,7 @@ const FormChatBox = () => {
                                     />
                                     <FormControlLabel
                                         control={<Radio sx={{
+                                            transform: 'scale(0.9)',
                                             '&.Mui-checked': {
                                                 color: 'orange',
                                             }
@@ -46,6 +62,7 @@ const FormChatBox = () => {
                     </FormGroup>
                     {errors.title && <FormHelperText></FormHelperText>}
                 </FormControl>
+                {/* Rest of your form components remain the same */}
                 <Box mb={2}>
                     <Controller
                         name="name"
@@ -109,18 +126,12 @@ const FormChatBox = () => {
                                     <FormControlLabel
                                         control={
                                             <Radio sx={{
+                                                transform: 'scale(0.9)',
                                                 '&.Mui-checked': {
                                                     color: 'orange',
                                                 }
                                             }}
                                                 {...field}
-                                                // checked={Array.isArray(field.value) && field.value.includes(option)}
-                                                // onChange={(e) => {
-                                                //     const newValue = e.target.checked
-                                                //         ? [...(field.value || []), option]
-                                                //         : (field.value || []).filter((val: string) => val !== option);
-                                                //     field.onChange(newValue);
-                                                // }}
                                                 checked={field.value === option}
                                                 onChange={() => field.onChange(option)}
                                                 value={option}
@@ -136,7 +147,7 @@ const FormChatBox = () => {
                 </FormControl>
                 <Button type="submit" variant="contained" color="primary">Bắt đầu trò truyện</Button>
             </form>
-        </div>
+        </Box>
     );
 };
 

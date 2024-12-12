@@ -5,7 +5,7 @@ import FillterCheckBox from './FillterCheckBox';
 import { FillterFormProvider } from './FillterFormContext';
 import ListFillter from './ListFillter';
 
-import './FillterForm.css'
+
 
 
 const FillterForm = ({ data, count }: any) => {
@@ -13,10 +13,17 @@ const FillterForm = ({ data, count }: any) => {
     console.log("csssssssssssssssssssssssssssssss", count)
     return (
         <FillterFormProvider>
-            <div className='row3211112'>
-                <FillterCheckBox count={count}></FillterCheckBox>
-                <ListFillter data={data}></ListFillter>
-            </div>
+            <Stack
+                direction="row"
+                spacing={6}
+                sx={{
+                    margin: '100px 0',
+                    width: '1128px',
+                }}
+            >
+                <FillterCheckBox count={count} />
+                <ListFillter data={data} />
+            </Stack>
         </FillterFormProvider>
 
     )

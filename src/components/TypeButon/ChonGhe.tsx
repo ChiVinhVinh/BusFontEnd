@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import './ChonGhe.css'
-import { Button } from '@mui/material';
+
+import { Box, Button, Stack } from '@mui/material';
 
 const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
     const [data, setData] = useState(initialData);
@@ -42,7 +42,6 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                 }
                 return ghe;
             });
-
             console.log("updategheeeeeeee", updatedDsghe)
             console.log("updateltttttttttttttttt", lichtrinh)
             const datalt = await fetch(`http://localhost:8080/lichtrinh/${lichtrinh.idLichTrinh}`, {
@@ -85,7 +84,6 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                 alert("Bạn chỉ được chọn tối đa 5 ghế!");
                 return;
             }
-
             const newData = [...data];
             newData[index] = {
                 ...newData[index],
@@ -134,8 +132,8 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
         const lowerFloorSeats = data.filter((seat: any) => seat.vitri % 2 !== 0);
         return (
 
-            <div className="rowdasdasads">
-                <div className="floor lower-floor">
+            <Stack direction="row" spacing={5}>
+                <div>
                     <h3>Tầng dưới</h3>
                     <table>
                         <tbody>
@@ -151,7 +149,7 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                         </tbody>
                     </table>
                 </div>
-                <div className="floor upper-floor">
+                <div>
                     <h3>Tầng trên</h3>
                     <table>
                         <tbody>
@@ -162,51 +160,162 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                                             seat.vitri > i * 10 && seat.vitri <= (i + 1) * 10
                                     ),
                                     i * 10 + 1,
-
                                 )
                             )}
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </Stack>
         );
     };
     return (
-        <div className='col2318127u'>
-            <div className="row32171277">
-                <div className='row21881'>
-                    <div className='ds218'></div>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem'
+        }}>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '5rem'
+            }}>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '1rem'
+                }}>
+                    <Box sx={{
+                        width: '1rem',
+                        height: '1rem',
+                        backgroundColor: 'rgb(213 217 221/ 1) !important',
+                        borderRadius: '0.25rem'
+                    }}></Box>
                     <span>Đã bán</span>
-                </div>
-                <div className='row21881'>
-                    <div className='ds21834'></div>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '1rem'
+                }}>
+                    <Box sx={{
+                        width: '1rem',
+                        height: '1rem',
+                        backgroundColor: 'rgb(222 243 255/ 1) !important',
+                        borderRadius: '0.25rem'
+                    }}></Box>
                     <span>Còn trống</span>
-                </div>
-                <div className='row21881'>
-                    <div className='ds218222'></div>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '1rem'
+                }}>
+                    <Box sx={{
+                        width: '1rem',
+                        height: '1rem',
+                        backgroundColor: 'rgba(248, 221, 221, 0.966) !important',
+                        borderRadius: '0.25rem'
+                    }}></Box>
                     <span>Đang chọn</span>
-                </div>
-            </div>
-            {renderSeat()}
-            <div style={{ height: '5rem', borderTop: '2px soild red', width: '100%' }}>
-                {selectedCount > 0 ? <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <span>{selectedCount}Vé</span>
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            {listVe.map((item, index) => <span key={index}> {item}{index < listVe.length - 1 ? ',' : ''}</span>)}
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <span>Tổng tiền</span>
-                            <span>{lichtrinh.price * selectedCount}</span>
-                        </div>
-                        <Button onClick={handleClickPost}>Chọn</Button>
-                    </div>
-                </div> : ''}
-            </div>
-        </div>
+                </Box>
+            </Box>
+
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '2rem',
+                '& table': {
+                    borderCollapse: 'separate',
+                    borderSpacing: '10px'
+                },
+                '& td': {
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    position: 'relative',
+                    width: '32px',
+                    height: '32px',
+                    '& img': {
+                        width: '32px',
+                        height: '32px',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0
+                    },
+                    '& span': {
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        fontSize: '10px',
+                        color: '#333',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                    }
+                },
+                '& .disabled-seat': {
+                    opacity: 0.6,
+                    cursor: 'not-allowed',
+                    '& span': {
+                        color: '#999'
+                    }
+                },
+                '& .seat-count-info': {
+                    padding: '10px',
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: '4px',
+                    margin: '10px 0'
+                }
+            }}>
+                {renderSeat()}
+            </Box>
+
+            <Box sx={{
+                height: '5rem',
+                borderTop: '2px solid red',
+                width: '100%'
+            }}>
+                {selectedCount > 0 ? (
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start'
+                        }}>
+                            <span>{selectedCount}Vé</span>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'row'
+                            }}>
+                                {listVe.map((item, index) => (
+                                    <span key={index}> {item}{index < listVe.length - 1 ? ',' : ''}</span>
+                                ))}
+                            </Box>
+                        </Box>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row'
+                        }}>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                                <span>Tổng tiền</span>
+                                <span>{lichtrinh.price * selectedCount}</span>
+                            </Box>
+                            <Button onClick={handleClickPost}>Chọn</Button>
+                        </Box>
+                    </Box>
+                ) : ''}
+            </Box>
+        </Box>
     )
 }
-
 export default ChonGhe;
