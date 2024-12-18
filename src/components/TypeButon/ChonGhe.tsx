@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { Box, Button, Stack } from '@mui/material';
+import { FillterFormContext } from '../FillterFormContext';
 
 const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
+    const context = useContext(FillterFormContext);
     const [data, setData] = useState(initialData);
+
     const [selectedCount, setSelectedCount] = useState(0);
     const [listVe, SetListVe] = useState<string[]>([])
     const MAX_SEATS = 5;
-
-    console.log("dataaaaaaaaaaaa", data)
+    useEffect(() => {
+        setData(initialData)
+    }, [initialData])
     const handleClickPost = async () => {
         try {
             for (const ghe of listVe) {
@@ -32,7 +36,7 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                 }
             }
             alert("Đặt vé thành công")
-            const updatedDsghe = lichtrinh.dsghe.map((ghe: any) => {
+            const updatedDsghe = data.map((ghe: any) => {
                 console.log()
                 if (listVe.includes(ghe.ghe)) {
                     return {
@@ -55,6 +59,9 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
             });
             if (!datalt.ok) {
                 throw new Error("Khong the set lich trinh")
+            }
+            if (context) {
+                context.updateLichTrinhSeats(lichtrinh.idLichTrinh, updatedDsghe);
             }
             setData(updatedDsghe)
             SetListVe([])
@@ -301,16 +308,18 @@ const ChonGhe = ({ data: initialData, lichtrinh }: any) => {
                         </Box>
                         <Box sx={{
                             display: 'flex',
-                            flexDirection: 'row'
+                            flexDirection: 'row',
+                            gap: "10px",
+                            alignItems: "center",
                         }}>
                             <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
                                 <span>Tổng tiền</span>
-                                <span>{lichtrinh.price * selectedCount}</span>
+                                <span style={{ color: "red" }}>{lichtrinh.price * selectedCount}</span>
                             </Box>
-                            <Button onClick={handleClickPost}>Chọn</Button>
+                            <Button variant="contained" sx={{ backgroundColor: "red", width: "160px", height: "32px", borderRadius: "100px" }} onClick={handleClickPost}>Chọn</Button>
                         </Box>
                     </Box>
                 ) : ''}

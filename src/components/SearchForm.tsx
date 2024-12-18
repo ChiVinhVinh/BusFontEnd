@@ -15,8 +15,8 @@ function SearchForm({ onChangeProject, result1 }: any) {
     const tickedOption = [1, 2, 3, 4, 5];
     const [diemdi, setDiemdi] = useState<string>("");
     const [diemden, setDiemden] = useState<string>("");
-    const [selectDate, setSelectDate] = useState<string>(dayjs().format('DD-MM-YYYY'));
-    const [selectBackdate, setBackDate] = useState<string>(dayjs().format('DD-MM-YYYY'));
+    const [selectDate, setSelectDate] = useState<string>(dayjs().format('DD/MM/YYYY'));
+    const [selectBackdate, setBackDate] = useState<string>(dayjs().format('DD/MM/YYYY'));
     const [recentSearchs, setRecentSearchs] = useState<any[]>([]);
     useEffect(() => {
         const dataTT = async () => {
@@ -50,17 +50,28 @@ function SearchForm({ onChangeProject, result1 }: any) {
 
             const saveSearch = localStorage.getItem('recentSearchs');
             let updateSearch = saveSearch ? JSON.parse(saveSearch) : [];
-            updateSearch.unshift(newSearch);
-            if (updateSearch.length > 4) {
-                updateSearch = updateSearch.slice(0, 4);
+            const isUpdate = updateSearch.some((u: any) => u.diemdi === newSearch.diemdi && u.diemden === newSearch.diemden && u.selectDate === newSearch.selectDate)
+            if (!isUpdate) {
+                updateSearch.unshift(newSearch);
+                if (updateSearch.length > 4) {
+                    updateSearch = updateSearch.slice(0, 4);
+                }
+                localStorage.setItem('recentSearchs', JSON.stringify(updateSearch));
+                setRecentSearchs(updateSearch);
             }
-            localStorage.setItem('recentSearchs', JSON.stringify(updateSearch));
-            setRecentSearchs(updateSearch);
-
+            let TripBack = []
+            let TimeCountBack = {}
+            if (selectKh) {
+                const { Trip, TimeCounts } = await fetchTrips(diemden, diemdi, selectBackdate);
+                TripBack = Trip,
+                    TimeCountBack = TimeCounts
+            }
             const { Trip, TimeCounts } = await fetchTrips(diemdi, diemden, selectDate);
             result1({
                 dataTrip: Trip,
-                timecount: TimeCounts
+                timecount: TimeCounts,
+                dataTripBack: TripBack,
+                timecountBack: TimeCountBack
             });
         } catch (error) {
             console.error("Error submitting search form:", error);

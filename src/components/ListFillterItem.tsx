@@ -1,13 +1,15 @@
 import { Button, Stack, Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ChonGhe from "./TypeButon/ChonGhe";
 import LichTrinh from "./TypeButon/LichTrinh";
 import TrungChuyen from "./TypeButon/TrungChuyen";
 import ChinhSach from "./TypeButon/ChinhSach";
+import { FillterFormContext } from "./FillterFormContext";
 
 const ListFillterItem = ({ data }: any) => {
     const [avalibleSeat, setAvalibleSeat] = useState(0);
     const [timeStap, setTimeStap] = useState("");
+    const context = useContext(FillterFormContext);
     const [selectButton, setSelectButton] = useState({
         selectghe: false,
         selectlichtrinh: false,
@@ -51,8 +53,13 @@ const ListFillterItem = ({ data }: any) => {
         setTimeStap(timeDuration);
     }, [data]);
     const handleButton = () => { }
+    const handleBoxClick = () => {
+        if (context) {
+            context.setSelectedItem({ item: data, time: timeStap });
+        }
+    };
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', borderRadius: '0.75rem', boxShadow: '0 0 0 1px rgba(0, 0, 0, .05), inset 0 0 0 1px #d1d5db', width: '100%' }}>
+        <Box onClick={handleBoxClick} sx={{ display: 'flex', flexDirection: 'column', borderRadius: '0.75rem', boxShadow: '0 0 0 1px rgba(0, 0, 0, .05), inset 0 0 0 1px #d1d5db', width: '100%', backgroundColor: "white" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ borderBottom: '1px outset gray', padding: '1rem' }}>
                 <Stack direction="column" alignItems="flex-start">
                     <Stack direction="row" alignItems="center" gap="1rem">

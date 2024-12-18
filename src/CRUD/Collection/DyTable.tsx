@@ -16,11 +16,10 @@ import { columnDiaDiem, columnlichtrinh, columnPrice, columnsVe, columnsXe, colu
 
 interface DynamicTableProps {
     dataType: 'xe' | 've' | 'vetuyen' | 'tuyen' | 'price' | 'lichtrinh' | 'diadiem';
-    column: ColDef[];
     endpoint: string;
 }
 
-const DynamicTable = ({ dataType, column, endpoint }: DynamicTableProps) => {
+const DynamicTable = ({ dataType, endpoint }: DynamicTableProps) => {
     const [rowData, setRowData] = useState<any[]>([]);
     const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
     const gridApi = useRef<GridApi | null>(null);
@@ -89,6 +88,7 @@ const DynamicTable = ({ dataType, column, endpoint }: DynamicTableProps) => {
         }
     };
     const handleDelete = async (data: any) => {
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkk", data);
         try {
             switch (dataType) {
                 case 'xe':
@@ -245,7 +245,6 @@ const DynamicTable = ({ dataType, column, endpoint }: DynamicTableProps) => {
                 break;
         }
     };
-
     return (
         <div style={{ display: "flex", flexDirection: "column", width: "100vw", height: "83vh", overflow: "hidden", padding: "0px 20px" }}>
             <Button onClick={handleAdd} variant="contained" sx={{ width: "50px" }}>+ADD</Button>
@@ -272,5 +271,4 @@ const DynamicTable = ({ dataType, column, endpoint }: DynamicTableProps) => {
         </div>
     );
 };
-
 export default DynamicTable;

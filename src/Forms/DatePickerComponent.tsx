@@ -26,7 +26,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({ name, label, 
                         value={field.value}
                         onChange={(dateValue) => {
                             field.onChange(dateValue);
-                            date(dateValue?.format("DD-MM-YYYY") || "");
+                            date(dateValue?.format("DD/MM/YYYY") || "");
                         }}
                         format="DD/MM/YYYY"
                         minDate={today}

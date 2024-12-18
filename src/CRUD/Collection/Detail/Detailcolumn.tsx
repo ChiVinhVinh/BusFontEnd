@@ -10,7 +10,7 @@ export const columndsghe = (editingRowIndex: number | null): ColDef[] => [
     {
         field: "No",
         valueGetter: (params) => (params.node?.rowIndex != null ? params.node.rowIndex + 1 : ""),
-        flex: 0.5
+        flex: 1
     },
     {
         field: "Actions",

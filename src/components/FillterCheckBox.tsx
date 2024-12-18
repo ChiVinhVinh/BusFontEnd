@@ -4,13 +4,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FillterButton from "./FillerButton";
 import { FillterFormContext } from "./FillterFormContext";
 
-const FillterCheckBox = ({ count }: any) => {
+const FillterCheckBox = ({ count1, count2 }: any) => {
     const context = useContext(FillterFormContext);
     if (!context) {
         throw new Error('useFilterForm must be used within a FillterFormProvider');
     }
     const { selectedFilters, setSelectedFilter } = context;
-
+    const { isReturn } = context;
+    const currentCount = isReturn ? count2 : count1;
     const handleTimeChange = (timeRange: string, checked: boolean) => {
         setSelectedFilter(prev => ({
             ...prev,
@@ -41,7 +42,7 @@ const FillterCheckBox = ({ count }: any) => {
             backgroundColor: '#fff',
             boxShadow: '0px 4px 8px rgba(0, 0, 1, 1)',
             borderRadius: '1rem',
-            width: '550px',
+            width: '360px',
             padding: '20px'
         }}>
             <Box sx={{
@@ -80,7 +81,7 @@ const FillterCheckBox = ({ count }: any) => {
                                 onChange={(e) => handleTimeChange('00:00-06:00', e.target.checked)}
                             />
                         }
-                        label={`Sáng sớm 00:00-06:00 (${count.EarlyMorning})`}
+                        label={`Sáng sớm 00:00-06:00 (${currentCount.EarlyMorning})`}
                     />
                     <FormControlLabel
                         control={
@@ -89,7 +90,7 @@ const FillterCheckBox = ({ count }: any) => {
                                 onChange={(e) => handleTimeChange('06:00-12:00', e.target.checked)}
                             />
                         }
-                        label={`Buổi sáng 06:00-12:00 (${count.Morning})`}
+                        label={`Buổi sáng 06:00-12:00 (${currentCount.Morning})`}
                     />
                     <FormControlLabel
                         control={
@@ -98,7 +99,7 @@ const FillterCheckBox = ({ count }: any) => {
                                 onChange={(e) => handleTimeChange('12:00-18:00', e.target.checked)}
                             />
                         }
-                        label={`Buổi chiều 12:00-18:00 (${count.Afternoon})`}
+                        label={`Buổi chiều 12:00-18:00 (${currentCount.Afternoon})`}
                     />
                     <FormControlLabel
                         control={
@@ -107,7 +108,7 @@ const FillterCheckBox = ({ count }: any) => {
                                 onChange={(e) => handleTimeChange('18:00-24:00', e.target.checked)}
                             />
                         }
-                        label={`Buổi tối 18:00-24:00 (${count.Evening})`}
+                        label={`Buổi tối 18:00-24:00 (${currentCount.Evening})`}
                     />
                 </FormGroup>
             </Box>
@@ -140,5 +141,4 @@ const FillterCheckBox = ({ count }: any) => {
         </Box>
     );
 };
-
 export default FillterCheckBox;

@@ -2,22 +2,54 @@ import ListFillterItem from "./ListFillterItem";
 import { useContext, useEffect, useState } from "react";
 import { FillterFormContext } from "./FillterFormContext";
 import _, { result } from 'lodash';
-const ListFillter = ({ data }: any) => {
+import { Button, Stack } from "@mui/material";
+import { Filter } from "@mui/icons-material";
+const ListFillter = () => {
     const [clickButton, setClickButton] = useState({
         selectGhe: false,
         selecTime: true,
         selectCost: true
     })
 
-    const [searchData, setSearchData] = useState(data)
-    console.log("dataaaaaa", searchData)
     const context = useContext(FillterFormContext);
     if (!context) {
         throw new Error('useFilterForm must be used within a FillterFormProvider');
     }
+    const { dataTrip, dataTripBack, selectedFilters, isReturn, setIsReturn } = context;
+    const currentData = isReturn ? dataTripBack : dataTrip;
+    const [filteredData, setFilteredData] = useState(currentData);
+    console.log("currentDatacurrentData", currentData)
+    useEffect(() => {
+        setFilteredData(currentData)
+    }, [currentData])
+    const formatDate = (dateString: string, format: string) => {
+        const [day, month, year] = dateString.split('/');
+        const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        const patterns: { [key: string]: () => string } = {
+            'DD': () => day.padStart(2, '0'),
+            'MM': () => month.padStart(2, '0'),
+            'YYYY': () => year,
+            'Day': () => {
+                const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+                return days[date.getDay()];
+            },
+        };
+        return format.replace(/DD|MM|YYYY|Day/g, match => patterns[match]());
+    };
+
+    const [tripDayInfo, setTripDayInfo] = useState('');
+    const [tripBackDayInfo, setTripBackDayInfo] = useState('');
 
     useEffect(() => {
-        let sortdata = [...data]
+        if (dataTrip?.length > 0) {
+            setTripDayInfo(formatDate(dataTrip[0].ngaydi, 'Day, DD/MM'));
+        }
+        if (dataTripBack?.length > 0) {
+            setTripBackDayInfo(formatDate(dataTripBack[0].ngaydi, 'Day, DD/MM'));
+        }
+    }, [dataTripBack, dataTrip]);
+    useEffect(() => {
+        let sortdata = [...currentData]
         let sortConditions: any[] = [];
         const sortOrders: any[] = [];
         if (clickButton.selectGhe) {
@@ -40,13 +72,13 @@ const ListFillter = ({ data }: any) => {
         if (sortConditions.length > 0) {
             sortdata = _.orderBy(sortdata, sortConditions, sortOrders);
         }
-        setSearchData(sortdata)
+        setFilteredData(sortdata)
         console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     }, [clickButton])
-    const { selectedFilters } = context;
     console.log("selectedFiltersselectedFilters", selectedFilters)
+
     useEffect(() => {
-        let filteredData = [...data];
+        let filteredData = [...currentData];
         if (selectedFilters.time.length > 0) {
             filteredData = filteredData.filter(item => {
                 const [itemHour, itemMin] = item.dstuyen[0].time.split(':');
@@ -73,7 +105,6 @@ const ListFillter = ({ data }: any) => {
                 return Hangdauseat || Hanggiuaseat || Hangcuoiseat
             })
         }
-
         if (selectedFilters.flow.length > 0) {
             filteredData = filteredData.filter(item => {
                 const avalabSeat = item.dsghe.filter((ghe: any) => ghe.trangthai === "Chưa đặt").map((ghe: any) => ghe.ghe)
@@ -94,8 +125,8 @@ const ListFillter = ({ data }: any) => {
             });
         }
         console.log("filteredDatafilteredData", filteredData)
-        setSearchData(filteredData)
-    }, [selectedFilters, data]);
+        setFilteredData(filteredData)
+    }, [selectedFilters]);
     const handOnClick = (name: any) => {
         setClickButton(prev => ({
             ...prev,
@@ -104,16 +135,18 @@ const ListFillter = ({ data }: any) => {
             selectGhe: name === "Ghế trống" ? !prev.selectGhe : prev.selectGhe
         }));
     }
-    console.log('data1', data)
+
     return (
         <div
             style={{
                 display: 'flex',
                 flexDirection: 'column',
                 width: '100%',
+                gap: "10px"
             }}
         >
-            {data && data.length > 0 ? (
+
+            {filteredData && filteredData.length > 0 ? (
                 <div
                     style={{
                         display: 'flex',
@@ -123,7 +156,7 @@ const ListFillter = ({ data }: any) => {
                     }}
                 >
                     <span style={{ fontSize: '1.25rem', lineHeight: '1.75rem' }}>
-                        {data[0].noidi}-{data[0].noiden}({data.length})
+                        {filteredData[0].noidi}-{filteredData[0].noiden}({filteredData.length})
                     </span>
                     <div
                         style={{
@@ -140,8 +173,9 @@ const ListFillter = ({ data }: any) => {
                                 gap: '5px',
                                 padding: '3px 20px',
                                 cursor: 'pointer',
-                                border: '1px solid red',
+                                border: clickButton.selectCost ? '1px solid red' : '1px solid black',
                                 borderRadius: '5px',
+                                backgroundColor: clickButton.selectCost ? '#FFFFE0' : 'white',
                                 color: clickButton.selectCost ? '#EF5222' : 'inherit',
                             }}
                         >
@@ -160,8 +194,9 @@ const ListFillter = ({ data }: any) => {
                                 gap: '5px',
                                 padding: '3px 20px',
                                 cursor: 'pointer',
-                                border: '1px solid red',
+                                border: clickButton.selecTime ? '1px solid red' : '1px solid black',
                                 borderRadius: '5px',
+                                backgroundColor: clickButton.selecTime ? '#FFFFE0' : 'white',
                                 color: clickButton.selecTime ? '#EF5222' : 'inherit',
                             }}
                         >
@@ -180,8 +215,9 @@ const ListFillter = ({ data }: any) => {
                                 gap: '5px',
                                 padding: '3px 20px',
                                 cursor: 'pointer',
-                                border: '1px solid red',
+                                border: clickButton.selectGhe ? '1px solid red' : '1px solid black',
                                 borderRadius: '5px',
+                                backgroundColor: clickButton.selectGhe ? '#FFFFE0' : 'white',
                                 color: clickButton.selectGhe ? '#EF5222' : 'inherit',
                             }}
                         >
@@ -193,7 +229,23 @@ const ListFillter = ({ data }: any) => {
                             <span style={{ fontSize: '16px' }}>Ghế trống</span>
                         </div>
                     </div>
-                    {searchData.map((item: any, index: number) => (
+                    {dataTripBack && dataTripBack.length > 0 && (
+                        <Stack direction="row" spacing={5} width="100%" justifyContent="center" sx={{ backgroundColor: "white" }}>
+                            <Button
+                                onClick={() => setIsReturn(false)}
+                                sx={{ fontSize: '18px', color: isReturn ? 'black' : 'red', borderBottom: isReturn ? '' : '4px solid red', width: "50%" }}
+                            >
+                                CHUYẾN ĐI-{tripDayInfo}
+                            </Button>
+                            <Button
+                                onClick={() => setIsReturn(true)}
+                                sx={{ fontSize: '18px', color: isReturn ? 'red' : 'black', borderBottom: isReturn ? '4px solid red' : '', width: "50%" }}
+                            >
+                                CHUYẾN VỀ-{tripBackDayInfo}
+                            </Button>
+                        </Stack>
+                    )}
+                    {filteredData.map((item: any, index: number) => (
                         <ListFillterItem key={index} data={item} />
                     ))}
                 </div>
@@ -217,5 +269,4 @@ const ListFillter = ({ data }: any) => {
 
     )
 }
-
 export default ListFillter;

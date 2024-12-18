@@ -20,6 +20,7 @@ const MainContainer = styled('main')({
 
 const MainContent = styled(Box)({
   flex: 1,
+  backgroundColor: '#f3f4f6',
 });
 
 const SearchFormContainer = styled(Box)({
@@ -72,8 +73,11 @@ function App() {
   const [clickform, setClickForm] = useState(false);
   const [result1, setResult1] = useState({
     dataTrip: [],
-    timecount: {}
+    timecount: {},
+    dataTripBack: [],
+    timecountBack: {}
   });
+  console.log("Result1Result1 ", result1)
   const [projectState, setProjectState] = useState<{
     selectedProjectId: null | undefined;
     project: any[];
@@ -95,7 +99,7 @@ function App() {
 
   let content;
   if (projectState.selectedProjectId === null) {
-    content = <FillterForm data={result1.dataTrip} count={result1.timecount} />;
+    content = <FillterForm data={result1} />;
   } else if (projectState.selectedProjectId === undefined) {
     content = <Body />;
   }

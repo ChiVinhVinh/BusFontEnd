@@ -22,6 +22,7 @@ export const fetchTrips = async (diemdi: string, diemden: string, selectDate: st
         throw error;
     }
 };
+
 export const fetchData = async (url: string) => {
     try {
         const reponse = await fetch(url);

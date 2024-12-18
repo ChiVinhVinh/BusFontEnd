@@ -138,7 +138,6 @@ export const columnVeTuyen = (editingRowIndex: number | null): ColDef[] => [
         valueGetter: (params) => (params.node?.rowIndex != null ? params.node.rowIndex + 1 : ""),
         flex: 1
     },
-
     {
         field: "Actions",
         cellRenderer: (params: ICellRendererParams) => (
@@ -182,14 +181,10 @@ export const columnTuyen = (editingRowIndex: number | null): ColDef[] => [
     {
         field: "No",
         valueGetter: (params) => (params.node?.rowIndex != null ? params.node.rowIndex + 1 : ""),
-        flex: 0.5
+        width: 150
 
     },
-    {
-        headerName: "ID Tuyen",
-        field: "idTuyen",
-        editable: true
-    },
+
     {
         field: "Action",
         cellRenderer: (params: ICellRendererParams) => (
@@ -205,6 +200,12 @@ export const columnTuyen = (editingRowIndex: number | null): ColDef[] => [
                 </IconButton>
             </>
         )
+    },
+    {
+        headerName: "ID Tuyen",
+        field: "idTuyen",
+        editable: true,
+        flex: 1
     },
     {
         headerName: "TuyenInFo",
@@ -231,13 +232,14 @@ export const columnTuyen = (editingRowIndex: number | null): ColDef[] => [
                 </div>
             )
         },
+        flex: 1
     },
 ]
 export const columnPrice = (editingRowIndex: number | null): ColDef[] => [
     {
         field: "No",
         valueGetter: (params) => (params.node?.rowIndex != null ? params.node.rowIndex + 1 : ""),
-        width: 200
+        width: 150
     },
     {
         field: "Actions",
@@ -272,10 +274,7 @@ export const columnlichtrinh = (editingRowIndex: number | null): ColDef[] => [
         valueGetter: (params) => (params.node?.rowIndex != null ? params.node.rowIndex + 1 : ""),
         width: 150,
     },
-    {
-        headerName: "ID Lịch Trình",
-        field: "idLichTrinh",
-    },
+
     {
         field: "Actions",
         cellRenderer: (params: ICellRendererParams) => (
@@ -291,16 +290,24 @@ export const columnlichtrinh = (editingRowIndex: number | null): ColDef[] => [
 
     },
     {
+        headerName: "ID Lịch Trình",
+        field: "idLichTrinh",
+        flex: 1
+    },
+    {
         headerName: "Id Xe",
         field: "idXe",
+        flex: 1
     },
     {
         headerName: "Id Tuyen",
         field: "idTuyen",
+        flex: 1
     },
     {
         headerName: "Ngày Đi",
         field: "ngaydi",
-        editable: true
+        editable: true,
+        flex: 1
     },
 ]
